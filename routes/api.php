@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/messages/send', [\App\Http\Controllers\MessageController::class, 'store']);
+Route::get('/messages/{id}', [\App\Http\Controllers\MessageController::class, 'show']);
