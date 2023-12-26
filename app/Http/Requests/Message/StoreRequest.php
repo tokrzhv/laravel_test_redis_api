@@ -25,16 +25,16 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'receiver_number' => 'required|integer',
+            'receiver_id' => 'required|integer',
             'content' => 'required|string|min:2|max:255'
         ];
     }
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation failed',
-            'fails'      => $validator->errors()
+            'status' => 'error',
+            'message'   => 'The given data was invalid.',
+            'errors'      => $validator->errors()
         ], 422));
     }
     public function messages()

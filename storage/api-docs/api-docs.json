@@ -1,0 +1,317 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Example for response examples value",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/messages/send": {
+            "post": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Send a new message to the receiver",
+                "description": "Endpoint to add a new message to the redis store",
+                "operationId": "createMessage",
+                "requestBody": {
+                    "description": "Message data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "receiver_number",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "receiver_id": {
+                                        "description": "id of the receiver",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "content": {
+                                        "description": "message content",
+                                        "type": "string",
+                                        "maximum": 255,
+                                        "minimum": 2,
+                                        "example": "Some content"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Message sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully sent"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "receiver_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Some content"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "receiver_id": {
+                                                    "type": "object",
+                                                    "example": [
+                                                        "The receiver id field is required.",
+                                                        "The receiver id must be an integer."
+                                                    ]
+                                                },
+                                                "content": {
+                                                    "type": "object",
+                                                    "example": [
+                                                        "The content field is required.",
+                                                        "The content must be at least 2 characters.",
+                                                        "The content may not be greater than 255 characters."
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Receiver id does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Receiver with the requested identifier does not exist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error, unable to create the item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server error occurred"
+                                        },
+                                        "details": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred while processing the request."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/messages/{receiver_id}": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Retrieve a specific messages by receiver_id",
+                "description": "Endpoint to fetch a specific message by receiver_id",
+                "operationId": "getMessageByReceiver_Id",
+                "parameters": [
+                    {
+                        "name": "receiver_id",
+                        "in": "path",
+                        "description": "ID of the receiver",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully received"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "receiver_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "messages": {
+                                                    "properties": {
+                                                        "content": {
+                                                            "type": "string",
+                                                            "example": "Some content"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "receiver_id": {
+                                                    "type": "object",
+                                                    "example": [
+                                                        "The receiver id must be an integer."
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Message for the receiver does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Messages with the receiver identifier does not exist'"
+                                        },
+                                        "error": {
+                                            "properties": {
+                                                "receiver_id": {
+                                                    "type": "object",
+                                                    "example": [
+                                                        "Messages not found or deleted"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error, unable to create the item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server error occurred"
+                                        },
+                                        "details": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred while processing the request."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

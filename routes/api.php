@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/messages/send', [\App\Http\Controllers\MessageController::class, 'store']);
-Route::get('/messages/{id}', [\App\Http\Controllers\MessageController::class, 'show']);
+Route::get('/messages/{receiver_id}', [\App\Http\Controllers\MessageController::class, 'show']);
