@@ -14,13 +14,12 @@ Before you can launch this project, you need to have the following software inst
 
 1. Clone this repository to your local machine.
 2. Navigate to the project directory.
-5. Copy the `.env.example` file to `.env` and update the database credentials.
-6. Run Docker Compose to set up the containers `docker-compose up -d`
-7. Install PHP dependencies docker-compose exec app composer install
-7. Connect to a shell terminal inside a docker container `docker exec -it app bash`
-8. Run `docker-compose exec app php artisan key:generate php artisan key:generate` to generate an application key.
-9. Run `docker-compose exec app php artisan key:generate php artisan migrate --seed` to run the database tables and seeders.
-10. Access the Laravel application at http://localhost:8876/.
+3. Copy the `.env.example` file to `.env` and update the database credentials.
+4. Run Docker Compose to set up the containers `docker-compose up -d`
+5. Install PHP dependencies `docker-compose exec app composer install`
+6. Run `docker-compose exec app php artisan key:generate php artisan key:generate` to generate an application key.
+7. Run `docker-compose exec app php artisan key:generate php artisan migrate --seed` to run the database tables and seeders. 
+8. Access the Laravel application at http://localhost:8876/.
 
 
 ### Launching
@@ -37,6 +36,22 @@ The Docker setup includes the following containers:
 - mysql: MySQL database container.
 - redis: Redis container.
 - nginx: Nginx container serving the Laravel application.
+
+### Container Details
+
+#### MySQL
+
+- Host: 127.0.0.1
+- Port: 8101
+- Username: root
+- Password: root
+
+#### Redis
+
+- Connection name: redis
+- Host: 127.0.0.1
+- Port: 6379
+- Password: 1111
 
 
 ### Swagger/OpenAPI Documentation
@@ -55,6 +70,7 @@ http://localhost/api/documentation
 For more information on using Swagger/OpenAPI in Laravel, refer to the L5 Swagger GitHub repository.
 
 Adjust the .env file configurations as needed for your specific environment setup.
+
 ### Building
 
 - [Laravel](https://laravel.com/) - The PHP web framework used
